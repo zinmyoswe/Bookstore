@@ -2,7 +2,7 @@
 using Bookstore.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Bookstore.Controllers
+namespace Bookstorezin.Controllers
 {
     public class CategoryController : Controller
     {
