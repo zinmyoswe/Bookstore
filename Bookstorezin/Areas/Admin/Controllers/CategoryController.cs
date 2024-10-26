@@ -3,20 +3,22 @@ using Bookstore.DataAccess.Repository.IRepository;
 using Bookstore.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Bookstorezin.Controllers
+namespace Bookstorezin.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
-        private readonly ICategoryRepository _categoryRepo;
+        private readonly IUnitOfWork _unitOfWork;
+        
        
-        public CategoryController(ICategoryRepository db)
+        public CategoryController(IUnitOfWork unitOfWork)
         {
             
-            _categoryRepo = db;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            List<Category> objCategoryList = _categoryRepo.GetAll().ToList();
+            List<Category> objCategoryList = _unitOfWork.Category.GetAll().ToList();
             return View(objCategoryList);
         }
 
@@ -35,8 +37,8 @@ namespace Bookstorezin.Controllers
 
             if (ModelState.IsValid)
             {
-                _categoryRepo.Add(obj);
-                _categoryRepo.Save();
+                _unitOfWork.Category.Add(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Category created successfully";
                 return RedirectToAction("Index");
             }
@@ -46,19 +48,19 @@ namespace Bookstorezin.Controllers
 
         public IActionResult Edit(int? id)
         {
-            if(id==null || id ==0)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
-            Category? categoryFromDb = _categoryRepo.Get(u=>u.Id == id);
-            //Category? categoryFromDb1 = _db.Categories.FirstOrDefault(x=>x.Id == id);
-            //Category? categoryFromDb2 = _db.Categories.Where(x=>x.Id == id).FirstOrDefault();
+            Category? categoryFromunitOfWork = _unitOfWork.Category.Get(u=>u.Id == id);
+            //Category? categoryFromunitOfWork1 = _unitOfWork.Categories.FirstOrDefault(x=>x.Id == id);
+            //Category? categoryFromunitOfWork2 = _unitOfWork.Categories.Where(x=>x.Id == id).FirstOrDefault();
 
-            if (categoryFromDb == null)
+            if (categoryFromunitOfWork == null)
             {
                 return NotFound();
             }
-            return View(categoryFromDb);
+            return View(categoryFromunitOfWork);
         }
 
         [HttpPost]
@@ -72,8 +74,8 @@ namespace Bookstorezin.Controllers
 
             if (ModelState.IsValid)
             {
-                _categoryRepo.Update(obj);
-                _categoryRepo.Save();
+                _unitOfWork.Category.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Category Updated successfully";
                 return RedirectToAction("Index");
             }
@@ -88,21 +90,21 @@ namespace Bookstorezin.Controllers
             {
                 return NotFound();
             }
-            Category? categoryFromDb = _categoryRepo.Get(u => u.Id == id);
-            //Category? categoryFromDb1 = _db.Categories.FirstOrDefault(x=>x.Id == id);
-            //Category? categoryFromDb2 = _db.Categories.Where(x=>x.Id == id).FirstOrDefault();
+            Category? categoryFromunitOfWork = _unitOfWork.Category.Get(u => u.Id == id);
+            //Category? categoryFromunitOfWork1 = _unitOfWork.Categories.FirstOrDefault(x=>x.Id == id);
+            //Category? categoryFromunitOfWork2 = _unitOfWork.Categories.Where(x=>x.Id == id).FirstOrDefault();
 
-            if (categoryFromDb == null)
+            if (categoryFromunitOfWork == null)
             {
                 return NotFound();
             }
-            return View(categoryFromDb);
+            return View(categoryFromunitOfWork);
         }
 
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            Category? obj = _categoryRepo.Get(u => u.Id ==id);
+            Category? obj = _unitOfWork.Category.Get(u => u.Id ==id);
 
             if (obj == null)
             {
@@ -110,8 +112,8 @@ namespace Bookstorezin.Controllers
             }
             
 
-            _categoryRepo.Remove(obj);
-            _categoryRepo.Save();
+            _unitOfWork.Category.Remove(obj);
+            _unitOfWork.Save();
             TempData["success"] = "Category deleted successfully";
             return RedirectToAction("Index");
             
