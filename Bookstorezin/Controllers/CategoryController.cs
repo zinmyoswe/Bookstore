@@ -1,4 +1,5 @@
 ﻿using Bookstore.DataAccess.Data;
+using Bookstore.DataAccess.Repository.IRepository;
 using Bookstore.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,15 +7,16 @@ namespace Bookstorezin.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _db;
-
-        public CategoryController(ApplicationDbContext db)
+        private readonly ICategoryRepository _categoryRepo;
+       
+        public CategoryController(ICategoryRepository db)
         {
-            _db = db;
+            
+            _categoryRepo = db;
         }
         public IActionResult Index()
         {
-            List<Category> objCategoryList = _db.Categories.ToList();
+            List<Category> objCategoryList = _categoryRepo.GetAll().ToList();
             return View(objCategoryList);
         }
 
@@ -33,8 +35,8 @@ namespace Bookstorezin.Controllers
 
             if (ModelState.IsValid)
             {
-                _db.Categories.Add(obj);
-                _db.SaveChanges();
+                _categoryRepo.Add(obj);
+                _categoryRepo.Save();
                 TempData["success"] = "Category created successfully";
                 return RedirectToAction("Index");
             }
@@ -48,7 +50,7 @@ namespace Bookstorezin.Controllers
             {
                 return NotFound();
             }
-            Category? categoryFromDb = _db.Categories.Find(id);
+            Category? categoryFromDb = _categoryRepo.Get(u=>u.Id == id);
             //Category? categoryFromDb1 = _db.Categories.FirstOrDefault(x=>x.Id == id);
             //Category? categoryFromDb2 = _db.Categories.Where(x=>x.Id == id).FirstOrDefault();
 
@@ -70,8 +72,8 @@ namespace Bookstorezin.Controllers
 
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(obj);
-                _db.SaveChanges();
+                _categoryRepo.Update(obj);
+                _categoryRepo.Save();
                 TempData["success"] = "Category Updated successfully";
                 return RedirectToAction("Index");
             }
@@ -86,7 +88,7 @@ namespace Bookstorezin.Controllers
             {
                 return NotFound();
             }
-            Category? categoryFromDb = _db.Categories.Find(id);
+            Category? categoryFromDb = _categoryRepo.Get(u => u.Id == id);
             //Category? categoryFromDb1 = _db.Categories.FirstOrDefault(x=>x.Id == id);
             //Category? categoryFromDb2 = _db.Categories.Where(x=>x.Id == id).FirstOrDefault();
 
@@ -100,7 +102,7 @@ namespace Bookstorezin.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            Category? obj = _db.Categories.Find(id);
+            Category? obj = _categoryRepo.Get(u => u.Id ==id);
 
             if (obj == null)
             {
@@ -108,8 +110,8 @@ namespace Bookstorezin.Controllers
             }
             
 
-            _db.Categories.Remove(obj);
-            _db.SaveChanges();
+            _categoryRepo.Remove(obj);
+            _categoryRepo.Save();
             TempData["success"] = "Category deleted successfully";
             return RedirectToAction("Index");
             
