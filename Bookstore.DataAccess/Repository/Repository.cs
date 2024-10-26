@@ -25,6 +25,8 @@ namespace Bookstore.DataAccess.Repository
             dbSet.Add(entity);
         }
 
+       
+
         public T Get(Expression<Func<T, bool>> filter)
         {
             IQueryable<T> query = dbSet;
@@ -32,10 +34,7 @@ namespace Bookstore.DataAccess.Repository
             return query.FirstOrDefault();
         }
 
-        public T Get(Expression<Func<Task, bool>> filter)
-        {
-            throw new NotImplementedException();
-        }
+       
 
         public IEnumerable<T> GetAll()
         {
