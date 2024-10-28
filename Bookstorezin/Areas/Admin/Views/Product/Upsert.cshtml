@@ -1,13 +1,15 @@
 ﻿@using Bookstore.Models.ViewModels
 @model ProductVM
 
-<form method="post">
+
     <div class="border p-3 mt-4">
         <div class="row pb-2">
-            <h2 class="text-primary">Create Product</h2>
+            <h2 class="text-primary">@(Model.Product.Id!=0?"Update":"Create") Product</h2>
             <hr />
         </div>
 
+        <form method="post" enctype="multipart/form-data">
+            <input asp-for="Product.Id" hidden />
         @*<div asp-validation-summary="ModelOnly"></div>*@
         <div class="mb-3 row p-1">
             <label asp-for="Product.Title" class="p-0">Book Title</label>
@@ -68,9 +70,7 @@
 
         <div class="mb-3 row p-1">
             <label asp-for="Product.ImageUrl" class="p-0">ImageUrl</label>
-            <input asp-for="Product.ImageUrl" class="form-control" />
-
-            <span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
+            <input type="file" asp-for="Product.ImageUrl" class="form-control" />
         </div>
 
 
@@ -79,7 +79,15 @@
       
         <div class="row">
             <div class="col-6 col-md-3">
-                <button type="submit" class="btn btn-dark form-control">Create</button>
+               
+                @if (Model.Product.Id != 0)
+                {
+                    <button type="submit" class="btn btn-dark form-control">Update</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-dark form-control">Create</button>
+                }
             </div>
             <div class="col-6 col-md-3">
                 <a asp-controller="Product" asp-action="Index" class="btn btn-outline-dark  form-control">
@@ -88,9 +96,9 @@
             </div>
         </div>
 
-
+    </form>
     </div>
-</form>
+
 
 
 @section Scripts{
