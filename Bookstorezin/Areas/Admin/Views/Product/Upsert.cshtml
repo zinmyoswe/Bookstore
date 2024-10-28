@@ -10,6 +10,7 @@
 
         <form method="post" enctype="multipart/form-data">
             <input asp-for="Product.Id" hidden />
+            <input asp-for="Product.ImageUrl" hidden />
         @*<div asp-validation-summary="ModelOnly"></div>*@
         <div class="mb-3 row p-1">
             <label asp-for="Product.Title" class="p-0">Book Title</label>
@@ -70,11 +71,14 @@
 
         <div class="mb-3 row p-1">
             <label asp-for="Product.ImageUrl" class="p-0">ImageUrl</label>
-            <input type="file" name="file" asp-for="Product.ImageUrl" class="form-control" />
+            <input type="file" name="file" class="form-control" />
         </div>
 
 
-
+        <div class="col-2">
+            <img src="@Model.Product.ImageUrl" width="100%"
+                 style="border-radius:5px; border:1px solid #bbb9b9" />
+        </div>
 
       
         <div class="row">
@@ -95,6 +99,8 @@
                 </a>
             </div>
         </div>
+
+        
 
     </form>
     </div>
