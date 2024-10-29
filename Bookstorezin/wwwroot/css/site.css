@@ -18,5 +18,19 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+/*  margin-bottom: 60px;*/
 }
+
+
+.footer {
+    background-color: #212529; /* Dark background */
+    color: #ffffff;
+}
+
+    .footer a {
+        color: #ffffff !important; /* Ensure links stay white */
+    }
+
+        .footer a:hover {
+            color: #cccccc !important; /* Light grey on hover */
+        }
