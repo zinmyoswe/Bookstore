@@ -108,6 +108,12 @@ namespace Bookstorezin.Areas.Identity.Pages.Account
             public string? Role { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
+            public string PhoneNumber { get; internal set; }
+            public string PostalCode { get; internal set; }
+            public string Name { get; internal set; }
+            public string State { get; internal set; }
+            public string City { get; internal set; }
+            public string StreetAddress { get; internal set; }
         }
 
 
@@ -144,6 +150,13 @@ namespace Bookstorezin.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.StreetAddress = Input.StreetAddress;
+                user.City = Input.City;
+                user.Name = Input.Name;
+                user.State = Input.State;
+                user.PostalCode = Input.PostalCode;
+                user.PhoneNumber = Input.PhoneNumber;
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)

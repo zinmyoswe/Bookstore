@@ -24,7 +24,7 @@ namespace Bookstore.DataAccess.Migrations
                 nullable: false,
                 defaultValue: "");
 
-            migrationBuilder.AddColumn<int>(
+            migrationBuilder.AddColumn<string>(
                 name: "Name",
                 table: "AspNetUsers",
                 type: "int",
