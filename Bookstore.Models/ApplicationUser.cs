@@ -11,7 +11,7 @@ namespace Bookstore.Models
     public class ApplicationUser : IdentityUser
     {
         [Required]
-        public int Id { get; set; }
+        public int Name { get; set; }
 
         public string? StreetAddress { get; set; }
 
