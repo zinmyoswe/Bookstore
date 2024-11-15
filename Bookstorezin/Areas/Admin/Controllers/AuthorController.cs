@@ -9,20 +9,20 @@ namespace Bookstorezin.Areas.Admin.Controllers
 {
     [Area("Admin")]
     //[Authorize(Roles = SD.Role_Admin)]
-    public class CategoryController : Controller
+    public class AuthorController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        
-       
-        public CategoryController(IUnitOfWork unitOfWork)
+
+
+        public AuthorController(IUnitOfWork unitOfWork)
         {
-            
+
             _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            List<Category> objCategoryList = _unitOfWork.Category.GetAll().ToList();
-            return View(objCategoryList);
+            List<Author> objAuthorList = _unitOfWork.Author.GetAll().ToList();
+            return View(objAuthorList);
         }
 
         public IActionResult Create()
@@ -31,22 +31,19 @@ namespace Bookstorezin.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Category obj)
+        public IActionResult Create(Author obj)
         {
-            if (obj.Name == obj.DisplayOrder.ToString())
-            {
-                ModelState.AddModelError("name", "The DisplayOrder cannot exactly match the Name");
-            }
+            
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.Category.Add(obj);
+                _unitOfWork.Author.Add(obj);
                 _unitOfWork.Save();
-                TempData["success"] = "Category created successfully";
+                TempData["success"] = "Author created successfully";
                 return RedirectToAction("Index");
             }
             return View();
-            
+
         }
 
         public IActionResult Edit(int? id)
@@ -55,21 +52,21 @@ namespace Bookstorezin.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            Category? categoryFromunitOfWork = _unitOfWork.Category.Get(u=>u.Id == id);
-            //Category? categoryFromunitOfWork1 = _unitOfWork.Categories.FirstOrDefault(x=>x.Id == id);
-            //Category? categoryFromunitOfWork2 = _unitOfWork.Categories.Where(x=>x.Id == id).FirstOrDefault();
+            Author? AuthorFromunitOfWork = _unitOfWork.Author.Get(u => u.Id == id);
+            //Author? AuthorFromunitOfWork1 = _unitOfWork.Categories.FirstOrDefault(x=>x.Id == id);
+            //Author? AuthorFromunitOfWork2 = _unitOfWork.Categories.Where(x=>x.Id == id).FirstOrDefault();
 
-            if (categoryFromunitOfWork == null)
+            if (AuthorFromunitOfWork == null)
             {
                 return NotFound();
             }
-            return View(categoryFromunitOfWork);
+            return View(AuthorFromunitOfWork);
         }
 
         [HttpPost]
-        public IActionResult Edit(Category obj)
+        public IActionResult Edit(Author obj)
         {
-            
+
             //if (obj.Name == obj.DisplayOrder.ToString())
             //{
             //    ModelState.AddModelError("name", "The DisplayOrder cannot exactly match the Name");
@@ -77,9 +74,9 @@ namespace Bookstorezin.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.Category.Update(obj);
+                _unitOfWork.Author.Update(obj);
                 _unitOfWork.Save();
-                TempData["success"] = "Category Updated successfully";
+                TempData["success"] = "Author Updated successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -93,34 +90,34 @@ namespace Bookstorezin.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            Category? categoryFromunitOfWork = _unitOfWork.Category.Get(u => u.Id == id);
-            //Category? categoryFromunitOfWork1 = _unitOfWork.Categories.FirstOrDefault(x=>x.Id == id);
-            //Category? categoryFromunitOfWork2 = _unitOfWork.Categories.Where(x=>x.Id == id).FirstOrDefault();
+            Author? AuthorFromunitOfWork = _unitOfWork.Author.Get(u => u.Id == id);
+            //Author? AuthorFromunitOfWork1 = _unitOfWork.Categories.FirstOrDefault(x=>x.Id == id);
+            //Author? AuthorFromunitOfWork2 = _unitOfWork.Categories.Where(x=>x.Id == id).FirstOrDefault();
 
-            if (categoryFromunitOfWork == null)
+            if (AuthorFromunitOfWork == null)
             {
                 return NotFound();
             }
-            return View(categoryFromunitOfWork);
+            return View(AuthorFromunitOfWork);
         }
 
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            Category? obj = _unitOfWork.Category.Get(u => u.Id ==id);
+            Author? obj = _unitOfWork.Author.Get(u => u.Id == id);
 
             if (obj == null)
             {
                 return NotFound();
             }
-            
 
-            _unitOfWork.Category.Remove(obj);
+
+            _unitOfWork.Author.Remove(obj);
             _unitOfWork.Save();
-            TempData["success"] = "Category deleted successfully";
+            TempData["success"] = "Author deleted successfully";
             return RedirectToAction("Index");
-            
-            
+
+
 
         }
 
