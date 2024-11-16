@@ -123,30 +123,29 @@ namespace Bookstorezin.Areas.Admin.Controllers
 
         public IActionResult Delete(int? id)
         {
-            var productToBeDeleted = _unitOfWork.Product.Get(u => u.Id == id);
-            if (productToBeDeleted == null) {
+            if (id == null || id == 0)
             {
-                    return Json(new { success = false, message = "Error while deleting" });
+                return Json(new { success = false, message = "Invalid Product ID" });
             }
-            var oldImagePath = 
-                    Path.Combine(_webHostEnvironment.WebRootPath,
-                    productToBeDeleted.ImageUrl.TrimStart('\\'));
 
-            if(System.IO.File.Exists(oldImagePath)) 
+            var productToBeDeleted = _unitOfWork.Product.Get(u => u.Id == id);
+            if (productToBeDeleted == null)
+            {
+                return Json(new { success = false, message = "Error while deleting" });
+            }
+
+            // Get the path of the product image and delete it if it exists
+            var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, productToBeDeleted.ImageUrl.TrimStart('\\'));
+            if (System.IO.File.Exists(oldImagePath))
             {
                 System.IO.File.Delete(oldImagePath);
             }
 
-
+            // Remove the product and save changes
             _unitOfWork.Product.Remove(productToBeDeleted);
             _unitOfWork.Save();
-        
-
-        }
-
 
             return Json(new { success = true, message = "Delete Successful" });
-       
         }
         #endregion
 

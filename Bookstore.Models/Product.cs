@@ -22,6 +22,9 @@ namespace Bookstore.Models
         [Required]
         public string ISBN { get; set; }
         [Required]
+
+
+        
         public string Author { get; set; }
         
         [Required]

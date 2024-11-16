@@ -42,10 +42,18 @@ function Delete(url) {
                 url: url,
                 type: 'DELETE',
                 success: function (data) {
-                    dataTable.ajax.reload();
-                    toastr.success(data.message);
+                    if (data.success) {
+                        dataTable.ajax.reload();
+                        toastr.success(data.message);
+                    } else {
+                        toastr.error(data.message);
+                    }
+                },
+                error: function (err) {
+                    console.error(err);
+                    toastr.error("Something went wrong. Please try again.");
                 }
-            })
+            });
         }
-    })
+    });
 }
