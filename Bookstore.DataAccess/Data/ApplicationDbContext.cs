@@ -19,6 +19,8 @@ namespace Bookstore.DataAccess.Data
 
         public DbSet<Author> Authors { get; set; }
 
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
 
